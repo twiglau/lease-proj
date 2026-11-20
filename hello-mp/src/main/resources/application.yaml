@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: hello-mp
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Lzy1990052812@
+    url: jdbc:mysql://localhost:3306/hello_mp?characterEncoding=UTF-8&useUnicode=true&serverTimezone=GMT%2d8
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

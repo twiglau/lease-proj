@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        根聚合父工程（Aggregator + Parent 二合一）：
+        1. packaging=pom 表示它只做模块聚合与版本管理，不打 jar
+        2. 继承 Spring Boot parent，把依赖/plugin 版本管理传递给所有子模块
+        3. 子模块只需把 parent 指向本项目，即可统一 Java / 依赖版本
+    -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.0.11</version>
+        <relativePath/> <!-- 从仓库解析，不从本地路径找 -->
+    </parent>
+
+    <groupId>org.twiglau</groupId>
+    <artifactId>lease-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>lease-parent</name>
+    <description>lease 学习项目 - 多模块聚合父工程</description>
+
+    <!-- 所有子服务模块；将来新增服务只需在此加一行 <module>xxx</module> -->
+    <modules>
+        <module>hello-mp</module>
+        <module>hello-minio</module>
+        <!-- <module>lease-backend</module> -->
+        <!-- <module>lease-frontend</module> -->
+    </modules>
+
+    <properties>
+        <java.version>17</java.version>
+        <!-- 第三方依赖版本集中管理，子模块引用时不再写 <version> -->
+        <mybatis-plus.version>3.5.4</mybatis-plus.version>
+        <aws.sdk.version>2.59.5</aws.sdk.version>
+    </properties>
+
+    <!--
+        依赖版本统一管理：这里只声明版本，不真正引入依赖。
+        子模块在 <dependencies> 中正常声明即可继承版本。
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!-- AWS SDK v2 BOM：统一管理 s3 / presigner 等所有模块版本 -->
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>${aws.sdk.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <!--
+                关键：项目级 JDK 隔离。
+                全局 ~/.zshrc 把 JAVA_HOME 锁死在 Java 8（为 public_chain 老项目服务），
+                但本项目要求 Java 17。这里用 Toolchains 强制编译使用 JDK 17，
+                不改全局 JAVA_HOME，两个项目互不干扰。
+                依赖 JDK 注册在 ~/.m2/toolchains.xml。
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-toolchains-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>toolchain</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <toolchains>
+                        <jdk>
+                            <version>17</version>
+                            <vendor>oracle</vendor>
+                        </jdk>
+                    </toolchains>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
