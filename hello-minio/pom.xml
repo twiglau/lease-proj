@@ -6,7 +6,7 @@
     <!-- parent 指向根聚合父工程，groupId/version/依赖版本全部继承 -->
     <parent>
         <groupId>org.twiglau</groupId>
-        <artifactId>lease-parent</artifactId>
+        <artifactId>lease</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -25,6 +25,22 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>s3</artifactId>
+            <exclusions>
+                <!--
+                    排除默认的 apache-client：它依赖 httpclient5，
+                    而 Spring Boot 3.0.11 把 httpclient5 锁在 5.1.4，与较新 AWS SDK 存在版本冲突。
+                    改用下面的 url-connection-client（JDK 内置实现，无第三方依赖）。
+                -->
+                <exclusion>
+                    <groupId>software.amazon.awssdk</groupId>
+                    <artifactId>apache-client</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- 轻量 HTTP 实现：基于 JDK HttpURLConnection，无第三方 httpclient 版本冲突 -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>url-connection-client</artifactId>
         </dependency>
 
         <dependency>

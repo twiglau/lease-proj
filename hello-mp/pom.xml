@@ -10,7 +10,7 @@
     -->
     <parent>
         <groupId>org.twiglau</groupId>
-        <artifactId>lease-parent</artifactId>
+        <artifactId>lease</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath> <!-- 指向根目录父 pom -->
     </parent>

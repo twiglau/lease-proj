@@ -416,3 +416,52 @@ A：Docker Hub 的 MinIO 镜像已被删除（404），quay.io 只剩无维护�
 
 **Q：数据会丢吗？**
 A：数据都在 `~/minio/data`，只要不删这个目录就一直在。重装只需重新下载二进制指向同一目录。
+
+---
+
+## 九、Spring Boot 演练模块 hello-minio
+
+项目里有个并列的子模块 `hello-minio`，用 AWS SDK for Java v2 连接本地 MinIO，启动即跑一遍
+「建桶 → 上传 → 下载 → 列举 → 预签名 URL → 删除」全流程，作为对象存储的演练示例。
+
+### 9.1 关键文件
+
+| 路径 | 作用 |
+|---|---|
+| `hello-minio/pom.xml` | 依赖 `s3` + `url-connection-client`，版本由父 pom 的 AWS SDK BOM 统一管理（当前 2.20.0） |
+| `config/MinioConfig.java` | 配置 `S3Client` / `S3Presigner`：path-style 访问（MinIO 必需）+ 指定 `UrlConnectionHttpClient` |
+| `service/MinioService.java` | 封装 6 个 S3 操作的示例 |
+| `DemoRunner.java` | `CommandLineRunner`，启动即演示，跑完自动退出 |
+| `src/main/resources/application.yaml` | 连接参数，密钥支持环境变量覆盖 |
+
+### 9.2 运行方式
+
+先确保 MinIO 服务已启动（见第四章），然后：
+
+```bash
+# 方式一：用 mvn 插件运行（需 JDK 17；本仓库 toolchains 已处理编译，但插件 mojo 需 17 启动）
+export JAVA_HOME=/Users/feiya/Library/Java/JavaVirtualMachines/openjdk-17.0.2/Contents/Home
+cd lease-proj
+mvn -pl hello-minio spring-boot:run
+
+# 方式二：打成 jar 直接跑
+mvn -pl hello-minio package -DskipTests
+java -jar hello-minio/target/hello-minio-0.0.1-SNAPSHOT.jar
+
+# 若 MinIO 密码与默认不同，用环境变量覆盖
+MINIO_SECRET='你的密码' java -jar hello-minio/target/hello-minio-0.0.1-SNAPSHOT.jar
+```
+
+### 9.3 踩坑记录（重要）
+
+| 现象 | 根因 | 处理 |
+|---|---|---|
+| `NoClassDefFoundError: TlsSocketStrategy` | 初版用 AWS SDK 2.59.5，其 apache-client 依赖 httpclient5 5.2+，但 Spring Boot 3.0.11 锁在 5.1.4 | 版本降到 **2.20.0** + 排除 apache-client + 用 `url-connection-client` |
+| `headBucket` 对不存在的桶报 403 而非 404 | 新版 AWS SDK 的异常翻译差异 | `ensureBucket()` 改用 `listBuckets()` 判断存在性，不用 `headBucket` |
+| `SignatureDoesNotMatch (403)` | 配置密钥与 MinIO 服务端实际密码不一致 | application.yaml 密钥务必与 `start_local.sh` 中的 `MINIO_ROOT_PASSWORD` 完全一致，或用 `MINIO_SECRET` 环境变量覆盖 |
+| 认证通过但 `putObject` 报 `Access Denied` | AI 会话沙箱拦截 MinIO 写数据目录 | 在自己终端运行即可，代码无需改动 |
+
+> 提示：本机 `~/.zshrc` 全局 `JAVA_HOME` 被锁在 Java 8（为另一个老项目服务）。本仓库通过
+> `~/.m2/toolchains.xml` + 根 pom 的 `maven-toolchains-plugin` 让**编译/测试**自动用 JDK 17；
+> 但 `spring-boot:run` 这类插件 mojo 跑在 Maven 启动的 JVM 里，需手动指定 `JAVA_HOME=17`
+> 或直接用 `java -jar`。

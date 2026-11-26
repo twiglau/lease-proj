@@ -25,10 +25,13 @@ public class MinioService {
     /** 建桶（已存在则跳过） */
     public void ensureBucket() {
         String bucket = config.getBucket();
-        try {
-            s3Client.headBucket(b -> b.bucket(bucket));
+        // 用 listBuckets 判断存在性：新版 AWS SDK 会把 headBucket 的 404 翻译成 403，
+        // 导致 catch NoSuchBucketException 接不住；listBuckets 无此歧义。
+        boolean exists = s3Client.listBuckets().buckets().stream()
+                .anyMatch(b -> bucket.equals(b.name()));
+        if (exists) {
             System.out.println("[桶] 已存在: " + bucket);
-        } catch (NoSuchBucketException e) {
+        } else {
             s3Client.createBucket(b -> b.bucket(bucket));
             System.out.println("[桶] 已创建: " + bucket);
         }
