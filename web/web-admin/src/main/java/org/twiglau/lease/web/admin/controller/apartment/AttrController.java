@@ -3,7 +3,7 @@ package org.twiglau.lease.web.admin.controller.apartment;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
-import org.twiglau.lease.common.result.Result;
+import org.twiglau.lease.result.Result;
 import org.twiglau.lease.model.entity.AttrKey;
 import org.twiglau.lease.model.entity.AttrValue;
 import org.twiglau.lease.web.admin.service.IAttrKeyService;

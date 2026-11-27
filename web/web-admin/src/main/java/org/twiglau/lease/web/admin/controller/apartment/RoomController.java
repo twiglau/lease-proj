@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.twiglau.lease.model.entity.RoomInfo;
 import org.twiglau.lease.model.enums.ReleaseStatus;
-import org.twiglau.lease.common.result.Result;
+import org.twiglau.lease.result.Result;
 import org.twiglau.lease.web.admin.service.IRoomInfoService;
 import org.twiglau.lease.web.admin.vo.room.RoomDetailVo;
 import org.twiglau.lease.web.admin.vo.room.RoomItemVo;

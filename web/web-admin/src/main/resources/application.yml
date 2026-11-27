@@ -17,6 +17,13 @@ spring:
       maximum-pool-size: 12 # 连接池最大连接数，默认是 10
       minimum-idle: 10 # 最小空闲连接数量
       pool-name: SPH_HikariPool # 连接池名称
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 2 # 基线版本本身会被当作「已执行」，比它大的版本才会执行
+    validate-on-migrate: true
+    clean-disabled: true
 
 springdoc:
   default-flat-param-object: true # 用于测试时将queryVo做打平处理

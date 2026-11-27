@@ -1,7 +1,5 @@
 package org.twiglau.lease.web.admin.service.impl;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.IdUtil;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
@@ -10,7 +8,6 @@ import io.minio.SetBucketPolicyArgs;
 import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import org.twiglau.lease.config.MinioProperties;
-import org.twiglau.lease.exception.FileStorageException;
 import org.twiglau.lease.web.admin.service.IFileService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -66,21 +63,25 @@ public class FileServiceImpl implements IFileService {
                     .bucket(minioProperties.getBucketName())
                     .object(fileName)
                     .stream(file.getInputStream(), file.getSize(), -1)
-                    .contentType(file.getContentType())
+                    .contentType(file.getContentType()) // 设置文件类型，不设置打开链接后，会下载图片
                     .build()
             );
 
-            return minioProperties.getEndPoint()
-                    + "/"
-                    + minioProperties.getBucketName()
-                    + "/"
-                    + fileName;
-        } catch (IOException e) {
-            throw new FileStorageException("读取上传文件失败", e);
+            return String.join("/",
+                    minioProperties.getBucketName(),
+                    minioProperties.getBucketName(),
+                    fileName
+            );
+
+//            return minioProperties.getEndPoint()
+//                    + "/"
+//                    + minioProperties.getBucketName()
+//                    + "/"
+//                    + fileName;
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
-            throw new FileStorageException("文件上传失败", e);
+            throw new RuntimeException("文件上传失败", e);
         }
     }
 

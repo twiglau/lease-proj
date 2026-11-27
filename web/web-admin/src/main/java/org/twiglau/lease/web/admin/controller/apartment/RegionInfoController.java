@@ -2,7 +2,7 @@ package org.twiglau.lease.web.admin.controller.apartment;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import org.twiglau.lease.common.result.Result;
+import org.twiglau.lease.result.Result;
 import org.twiglau.lease.model.entity.CityInfo;
 import org.twiglau.lease.model.entity.DistrictInfo;
 import org.twiglau.lease.model.entity.ProvinceInfo;

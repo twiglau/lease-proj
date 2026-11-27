@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.twiglau.lease.model.entity.SystemUser;
 import org.twiglau.lease.model.enums.BaseStatus;
-import org.twiglau.lease.common.result.Result;
+import org.twiglau.lease.result.Result;
 import org.twiglau.lease.web.admin.service.ISystemUserService;
 import org.twiglau.lease.web.admin.vo.system.user.SystemUserItemVo;
 import org.twiglau.lease.web.admin.vo.system.user.SystemUserQueryVo;

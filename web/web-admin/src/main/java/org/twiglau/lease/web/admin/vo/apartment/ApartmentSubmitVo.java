@@ -13,16 +13,16 @@ import java.util.List;
 @Data
 public class ApartmentSubmitVo extends ApartmentInfo {
 
-    @Schema(description="公寓配套id")
+    @Schema(description="公寓配套ids")
     private List<Long> facilityInfoIds;
 
-    @Schema(description="公寓标签id")
+    @Schema(description="公寓标签ids")
     private List<Long> labelIds;
 
-    @Schema(description="公寓杂费值id")
+    @Schema(description="公寓杂费值ids")
     private List<Long> feeValueIds;
 
-    @Schema(description="公寓图片id")
+    @Schema(description="公寓图片ids")
     private List<GraphVo> graphVoList;
 
 }

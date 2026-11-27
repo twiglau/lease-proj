@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.twiglau.lease.model.entity.*;
@@ -54,15 +55,15 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
      */
     @Override
     public void saveOrUpdateApartmentInfo(ApartmentSubmitVo apartmentSubmitVo) {
-        // 更新公寓，先删除历史关联信息
+        // 0. 更新公寓，先删除历史关联信息
         if (apartmentSubmitVo.getId() != null) {
             clearApartmentHistory(apartmentSubmitVo.getId());
         }
 
-        // 保存更新公寓信息
+        // 1. 保存更新公寓信息: 确保公寓ID主键存在
         super.saveOrUpdate(apartmentSubmitVo);
 
-        // 保存公寓关联信息
+        // 2.然后根据公寓ID,再保存公寓关联信息
         saveApartmentGraphInfo(apartmentSubmitVo);
         saveApartmentFacility(apartmentSubmitVo);
         saveApartmentLabel(apartmentSubmitVo);
@@ -95,7 +96,9 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
      */
     private void saveApartmentGraphInfo(ApartmentSubmitVo apartmentSubmitVo) {
         List<GraphVo> graphVoList = apartmentSubmitVo.getGraphVoList();
-        if (graphVoList != null && !graphVoList.isEmpty()) {
+        boolean isEmptyList = CollectionUtils.isEmpty(graphVoList);
+        // graphVoList != null && !graphVoList.isEmpty()
+        if (!isEmptyList) {
             List<GraphInfo> graphInfoList = graphVoList.stream().map(graphVo -> {
                 GraphInfo graphInfo = new GraphInfo();
                 graphInfo.setItemId(apartmentSubmitVo.getId());
@@ -113,13 +116,15 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
      */
     private void saveApartmentFacility(ApartmentSubmitVo apartmentSubmitVo) {
         List<Long> facilityInfoIdList = apartmentSubmitVo.getFacilityInfoIds();
-        if (facilityInfoIdList != null && !facilityInfoIdList.isEmpty()) {
+        boolean isEmptyList = CollectionUtils.isEmpty(facilityInfoIdList);
+        // facilityInfoIdList != null && !facilityInfoIdList.isEmpty()
+        if (!isEmptyList) {
             List<ApartmentFacility> apartmentFacilityList = facilityInfoIdList.stream().map(facilityInfoId -> {
                 ApartmentFacility apartmentFacility = new ApartmentFacility();
                 apartmentFacility.setApartmentId(apartmentSubmitVo.getId());
                 apartmentFacility.setFacilityId(facilityInfoId);
                 return apartmentFacility;
-            }).toList();
+            }).collect(Collectors.toList());
             apartmentFacilityService.saveBatch(apartmentFacilityList);
         }
     }
@@ -129,13 +134,14 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
      */
     private void saveApartmentLabel(ApartmentSubmitVo apartmentSubmitVo) {
         List<Long> labelIdList = apartmentSubmitVo.getLabelIds();
-        if (labelIdList != null && !labelIdList.isEmpty()) {
+        boolean isEmptyList = CollectionUtils.isEmpty(labelIdList);
+        if (!isEmptyList) {
             List<ApartmentLabel> apartmentLabelList = labelIdList.stream().map(labelId -> {
                 ApartmentLabel apartmentLabel = new ApartmentLabel();
                 apartmentLabel.setApartmentId(apartmentSubmitVo.getId());
                 apartmentLabel.setLabelId(labelId);
                 return apartmentLabel;
-            }).toList();
+            }).collect(Collectors.toList());
             apartmentLabelService.saveBatch(apartmentLabelList);
         }
     }
@@ -145,7 +151,8 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
      */
     private void saveApartmentFeeValue(ApartmentSubmitVo apartmentSubmitVo) {
         List<Long> feeValueIdList = apartmentSubmitVo.getFeeValueIds();
-        if (feeValueIdList != null && !feeValueIdList.isEmpty()) {
+        boolean isEmptyList = CollectionUtils.isEmpty(feeValueIdList);
+        if (!isEmptyList) {
             List<ApartmentFeeValue> apartmentFeeValueList = feeValueIdList.stream().map(feeValueId -> {
                 ApartmentFeeValue apartmentFeeValue = new ApartmentFeeValue();
                 apartmentFeeValue.setApartmentId(apartmentSubmitVo.getId());

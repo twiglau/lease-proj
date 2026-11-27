@@ -2,7 +2,7 @@ package org.twiglau.lease.exception;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.twiglau.lease.common.result.ResultCodeEnum;
+import org.twiglau.lease.result.ResultCodeEnum;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

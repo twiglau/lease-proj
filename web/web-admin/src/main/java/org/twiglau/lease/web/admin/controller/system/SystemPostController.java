@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.twiglau.lease.model.entity.SystemPost;
 import org.twiglau.lease.model.enums.BaseStatus;
-import org.twiglau.lease.common.result.Result;
+import org.twiglau.lease.result.Result;
 import org.twiglau.lease.web.admin.service.ISystemPostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

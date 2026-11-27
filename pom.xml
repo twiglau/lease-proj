@@ -51,6 +51,7 @@
         <!-- AWS SDK 版本：2.20.0 与 Spring Boot 3.0.11 / MinIO 2025-04 同代际，签名兼容 -->
         <aws.sdk.version>2.20.0</aws.sdk.version>
         <hutool.version>5.8.28</hutool.version>
+        <flyway.version>9.5.1</flyway.version>
     </properties>
 
     <!--
@@ -129,6 +130,17 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+            <!--数据库管理-->
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>${flyway.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-mysql</artifactId>
+                <version>${flyway.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

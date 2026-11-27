@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.twiglau.lease.model.entity.LeaseAgreement;
 import org.twiglau.lease.model.enums.LeaseStatus;
-import org.twiglau.lease.common.result.Result;
+import org.twiglau.lease.result.Result;
 import org.twiglau.lease.web.admin.service.ILeaseAgreementService;
 import org.twiglau.lease.web.admin.vo.agreement.AgreementQueryVo;
 import org.twiglau.lease.web.admin.vo.agreement.AgreementVo;

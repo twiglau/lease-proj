@@ -2,7 +2,7 @@ package org.twiglau.lease.web.admin.controller.lease;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.twiglau.lease.common.result.Result;
+import org.twiglau.lease.result.Result;
 import org.twiglau.lease.model.enums.AppointmentStatus;
 import org.twiglau.lease.web.admin.service.IViewAppointmentService;
 import org.twiglau.lease.web.admin.vo.appointment.AppointmentQueryVo;

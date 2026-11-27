@@ -3,7 +3,7 @@ package org.twiglau.lease.web.admin.controller.apartment;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.twiglau.lease.common.result.Result;
+import org.twiglau.lease.result.Result;
 import org.twiglau.lease.model.entity.FacilityInfo;
 import org.twiglau.lease.model.enums.ItemType;
 import org.twiglau.lease.web.admin.service.IFacilityInfoService;

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.twiglau.lease.model.entity.ApartmentFacility;
+import org.twiglau.lease.model.entity.ApartmentInfo;
 import org.twiglau.lease.web.admin.mapper.ApartmentFacilityMapper;
 import org.twiglau.lease.web.admin.service.IApartmentFacilityService;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,11 @@ public class ApartmentFacilityServiceImpl extends ServiceImpl<ApartmentFacilityM
      */
     @Override
     public Boolean removeByApartmentId(Long apartmentId) {
+
+//        LambdaQueryWrapper<ApartmentFacility> facilityQueryWrapper = new LambdaQueryWrapper<>();
+//        facilityQueryWrapper.eq(ApartmentFacility::getApartmentId, apartmentId);
+
+
         LambdaQueryWrapper<ApartmentFacility> apartmentFacilityQueryWrapper = Wrappers.lambdaQuery(ApartmentFacility.class)
                 .eq(ApartmentFacility::getApartmentId, apartmentId);
         return this.remove(apartmentFacilityQueryWrapper);

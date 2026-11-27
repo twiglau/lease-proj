@@ -3,9 +3,10 @@ package org.twiglau.lease.web.admin.controller.apartment;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springdoc.core.annotations.ParameterObject;
 import org.twiglau.lease.model.entity.ApartmentInfo;
 import org.twiglau.lease.model.enums.ReleaseStatus;
-import org.twiglau.lease.common.result.Result;
+import org.twiglau.lease.result.Result;
 import org.twiglau.lease.web.admin.service.IApartmentInfoService;
 import org.twiglau.lease.web.admin.vo.apartment.ApartmentDetailVo;
 import org.twiglau.lease.web.admin.vo.apartment.ApartmentItemVo;
@@ -46,7 +47,7 @@ public class ApartmentController {
     @GetMapping("pageItem")
     public Result<IPage<ApartmentItemVo>> pageItem(@RequestParam long current,
                                                    @RequestParam long size,
-                                                   ApartmentQueryVo queryVo) {
+                                                   @ParameterObject ApartmentQueryVo queryVo) {
         IPage<ApartmentItemVo> page = new Page<>(current, size);
         IPage<ApartmentItemVo> list = apartmentInfoService.pageApartmentItemVo(page, queryVo);
         return Result.ok(list);

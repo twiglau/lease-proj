@@ -4,7 +4,7 @@ package org.twiglau.lease.web.admin.controller.apartment;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
-import org.twiglau.lease.common.result.Result;
+import org.twiglau.lease.result.Result;
 import org.twiglau.lease.model.entity.LabelInfo;
 import org.twiglau.lease.model.enums.ItemType;
 import org.twiglau.lease.web.admin.service.ILabelInfoService;

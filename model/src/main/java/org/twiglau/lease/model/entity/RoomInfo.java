@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("room_info")
+
 @Schema(name = "RoomInfo", description = "房间信息表")
 public class RoomInfo extends BaseEntity {
 

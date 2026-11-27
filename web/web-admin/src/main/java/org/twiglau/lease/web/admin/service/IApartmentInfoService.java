@@ -56,4 +56,5 @@ public interface IApartmentInfoService extends IService<ApartmentInfo> {
      * @return 公寓信息列表
      */
     List<ApartmentInfo> listInfoByDistrictId(Long districtId);
+
 }

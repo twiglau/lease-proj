@@ -3,7 +3,7 @@ package org.twiglau.lease.web.admin.controller.login;
 
 import org.twiglau.lease.login.LoginUser;
 import org.twiglau.lease.login.LoginUserHolder;
-import org.twiglau.lease.common.result.Result;
+import org.twiglau.lease.result.Result;
 import org.twiglau.lease.web.admin.service.ILoginService;
 import org.twiglau.lease.web.admin.vo.login.CaptchaVo;
 import org.twiglau.lease.web.admin.vo.login.LoginVo;
